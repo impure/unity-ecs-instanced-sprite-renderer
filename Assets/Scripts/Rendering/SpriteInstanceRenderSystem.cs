@@ -19,11 +19,14 @@ public class SpriteInstanceRendererSystem : ComponentSystem {
 	private readonly List<SpriteInstanceRenderer> cacheduniqueRendererTypes = new List<SpriteInstanceRenderer>(10);
 	private ComponentGroup instanceRendererGroup;
 
+	/// <summary>
+	/// Gets a container for all of our meshes and transforms
+	/// </summary>
 	protected override void OnCreateManager(int capacity) {
-		// We want to find all MeshInstanceRenderer & TransformMatrix combinations and render them
 		instanceRendererGroup = GetComponentGroup(typeof(SpriteInstanceRenderer), typeof(TransformMatrix));
 	}
-	
+
+
 	protected override void OnUpdate() {
 		// We want to iterate over all unique MeshInstanceRenderer shared component data,
 		// that are attached to any entities in the world
@@ -33,8 +36,11 @@ public class SpriteInstanceRendererSystem : ComponentSystem {
 			// SharedComponentData gurantees that all those entities are packed togehter in a chunk with linear memory layout.
 			// As a result the copy of the matrices out is internally done via memcpy.
 			var renderer = cacheduniqueRendererTypes[i];
-			if (renderer.sprite == null)
+			if (renderer.sprite == null) {
+				Debug.Log("Null sprite");
 				continue;
+			}
+
 			instanceRendererGroup.SetFilter(renderer);
 			var transforms = instanceRendererGroup.GetComponentDataArray<TransformMatrix>();
 
@@ -48,12 +54,12 @@ public class SpriteInstanceRendererSystem : ComponentSystem {
 			}
 
 			if (!materialCache.TryGetValue(renderer, out material)) {
-				
+
 				material = new Material(Shader.Find("Sprites/Instanced")) {
 					enableInstancing = true,
 					mainTexture = renderer.sprite
 				};
-				
+
 				materialCache.Add(renderer, material);
 			}
 
@@ -75,9 +81,10 @@ public class SpriteInstanceRendererSystem : ComponentSystem {
 				beginIndex += length;
 			}
 		}
-		
+
 		cacheduniqueRendererTypes.Clear();
 	}
+
 
 	// This is the ugly bit, necessary until Graphics.DrawMeshInstanced supports NativeArrays pulling the data in from a job.
 	private static unsafe void copyMatrices(ComponentDataArray<TransformMatrix> transforms, 

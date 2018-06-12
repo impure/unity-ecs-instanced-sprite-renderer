@@ -5,18 +5,20 @@ using Unity.Transforms2D;
 using UnityEditor;
 using UnityEngine;
 
+/// <summary>
+/// Illustrates that we can interact with ECS from the traditional monobehaviour model
+/// </summary>
 public class Init : MonoBehaviour {
 
-	// Use this for initialization
 	void Start () {
         
 		var entityManager = World.Active.GetOrCreateManager<EntityManager>();
 
 		//Load all the sprites we need
 		var animalSprites = new[] {
-			AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Scenes/Sprite Rendering Example/Sprites/elephant.png"),
-			AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Scenes/Sprite Rendering Example/Sprites/giraffe.png"),
-			AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Scenes/Sprite Rendering Example/Sprites/zebra.png"),
+			AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Sprites/elephant.png"),
+			AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Sprites/giraffe.png"),
+			AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Sprites/zebra.png")
 		};
         
 		//Assign loaded sprites to sprite renderers
@@ -30,15 +32,10 @@ public class Init : MonoBehaviour {
 		for (int i = 0; i < 10000; i++) {
             
 			var entity = entityManager.CreateEntity(ComponentType.Create<Position2D>(),
-				ComponentType.Create<Heading2D>(),
 				ComponentType.Create<TransformMatrix>());
 
 			entityManager.SetComponentData(entity, new Position2D {
 				Value = new float2(Random.value * 50, Random.value * 25)
-			});
-
-			entityManager.SetComponentData(entity, new Heading2D {
-				Value = new float2(Random.value, Random.value)
 			});
 
 			entityManager.AddSharedComponentData(entity, renderers[i % 3]);
