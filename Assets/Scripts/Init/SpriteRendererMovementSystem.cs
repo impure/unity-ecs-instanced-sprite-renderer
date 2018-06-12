@@ -19,8 +19,8 @@ public class EntityMovementSystem : JobComponentSystem {
 		}
 	}
 
-	protected override JobHandle OnUpdate(JobHandle inputDeps) {
-		var job = new PositionJob {dt = Time.deltaTime};
-		return job.Schedule(this, 64, inputDeps);
-	}
+	//protected override JobHandle OnUpdate(JobHandle inputDeps) {
+	//	var job = new PositionJob {dt = Time.deltaTime};
+	//	return job.Schedule(this, 64, inputDeps);
+	//}
 }

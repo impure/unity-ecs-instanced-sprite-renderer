@@ -3,17 +3,11 @@
 public class FPS : MonoBehaviour {
 	private float deltaTime = 0.0f;
 	private float approxSquaredDeviation = 0.0f;
-	private bool firstCall = true;
 
 
 	void Update() {
 		approxSquaredDeviation += (Mathf.Pow(Time.unscaledDeltaTime - deltaTime, 2) - approxSquaredDeviation) * 0.05f;
         deltaTime += (Time.unscaledDeltaTime - deltaTime) * 0.1f;
-
-		if (firstCall) {
-			firstCall = false;
-			Debug.Log("First frame time: " + Time.unscaledDeltaTime);
-		}
     }
 
 
