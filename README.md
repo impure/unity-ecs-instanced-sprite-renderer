@@ -9,6 +9,12 @@ The purpose of this implementation is instantiation speed. The current build can
 # Stats
 
 - Instantiation (GameObject) >= 40ms (68ms, 79ms, 49ms, 48ms, 48ms, 42ms, 42ms, 52ms, 47ms, 43ms, 41ms, 45ms, 42ms)
-- Instantiation (ECS) >= 8ms (9ms, 9ms, 9ms, 8ms, 8ms, 9ms) (Note: Initializing lists outside of stopwatch section does not appear to help at all. Also starting lists at size 1023 doesn’t help at all either.)
+- Instantiation (ECS) (not including asset loading) >= 7ms (total >= 11ms) (9ms, 9ms, 9ms, 8ms, 8ms, 9ms, 7ms, ) (Note: Initializing lists outside of stopwatch section does not appear to help at all. Also starting lists at size 1023 doesn’t help at all either.)
+- Instantiation (ECS threaded) > 7ms (total >= 11 ms):
+	- Meshes (5ms) (very consistnet)
+	- Create (2ms, 3ms, 3ms, 3ms)
+
+- Asset loading >= 4ms (5ms, 9ms, 4ms, 4ms, 9ms, 5ms, 10ms, 11ms)
+
 - FPS (GameObject) ~80FPS
 - FPS (ECS) ~ 110FPS

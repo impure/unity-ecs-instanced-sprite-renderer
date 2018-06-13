@@ -20,6 +20,10 @@ public class SpriteInstanceRendererSystem : ComponentSystem {
 	/// </summary>
 	protected override void OnUpdate() {
 
+		if (!Init.listDone) {
+			return;
+		}
+		
 		foreach (var entry in Init.toDraw) {
 
 			if (entry.Value.Count > gpuInstancingMagicNumber) {
