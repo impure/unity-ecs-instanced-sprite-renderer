@@ -15,7 +15,7 @@ public class Init : MonoBehaviour {
 	private const int numSprites = 3000;
 	
 	private void Start() {
-		//QualitySettings.vSyncCount = 0;
+		QualitySettings.vSyncCount = 0;
 		generate();
 	}
 
