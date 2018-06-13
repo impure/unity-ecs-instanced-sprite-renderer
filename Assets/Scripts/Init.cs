@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Threading;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Rendering;
 using Debug = UnityEngine.Debug;
 using Random = System.Random;
 
@@ -17,10 +18,22 @@ public class Init : MonoBehaviour {
 	public static volatile bool listDone = false;
 	private Random rng;
 	private Tuple<Mesh, Material>[] keys;
+	private const int gpuInstancingMagicNumber = 1023;
+
+	[SerializeField] public bool useComponent = true;
+
+	private static Init instance;
+	public static bool _useComponent {
+		get { return instance.useComponent; }
+	}
 
 	//Load all the sprites we need
 	private Texture2D[] animalSprites;
 	private int[] animalSpriteWidths;
+
+	private void Awake() {
+		instance = this;
+	}
 	
 	private void Start() {
 		
@@ -58,6 +71,38 @@ public class Init : MonoBehaviour {
 		}
 	}
 
+
+	/// <summary>
+	/// Renders everything.
+	/// </summary>
+	protected void Update() {
+
+		if (!listDone) {
+			return;
+		}
+
+		if (useComponent) {
+			return;
+		}
+		
+		foreach (var entry in toDraw) {
+
+			if (entry.Value.Count > gpuInstancingMagicNumber) {
+				throw new Exception("Too many sprites! There are " + entry.Value.Count + " sprites!");
+			}
+			
+			// Standard way of drawing meshes
+			//Graphics.DrawMeshInstanced(entry.Key.Item1, 0, entry.Key.Item2, entry.Value);
+			
+			// Allows for layers.
+			Graphics.DrawMeshInstanced(entry.Key.Item1, 0, entry.Key.Item2, entry.Value, new MaterialPropertyBlock(), new ShadowCastingMode(), false, 1);
+
+			//for (int i = 0; i < entry.Value.Count; i++) {
+			//	Graphics.DrawMesh(entry.Key.Item1, entry.Value[i], entry.Key.Item2, 1);
+			//}
+		}
+		
+	}
 
 	/// <summary>
 	/// Generates all the data the ECS system will use

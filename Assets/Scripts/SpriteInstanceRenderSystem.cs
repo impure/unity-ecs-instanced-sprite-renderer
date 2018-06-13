@@ -12,8 +12,9 @@ using UnityEngine.Rendering;
 /// </summary>
 public class SpriteInstanceRendererSystem : ComponentSystem {
 	
-	private ComponentGroup instanceRendererGroup;
 	private const int gpuInstancingMagicNumber = 1023;
+
+	private Init _init;
 
 	/// <summary>
 	/// Renders everything.
@@ -21,6 +22,10 @@ public class SpriteInstanceRendererSystem : ComponentSystem {
 	protected override void OnUpdate() {
 
 		if (!Init.listDone) {
+			return;
+		}
+	
+		if (!Init._useComponent) {
 			return;
 		}
 		
@@ -35,6 +40,10 @@ public class SpriteInstanceRendererSystem : ComponentSystem {
 			
 			// Allows for layers.
 			Graphics.DrawMeshInstanced(entry.Key.Item1, 0, entry.Key.Item2, entry.Value, new MaterialPropertyBlock(), new ShadowCastingMode(), false, 1);
+
+			//for (int i = 0; i < entry.Value.Count; i++) {
+			//	Graphics.DrawMesh(entry.Key.Item1, entry.Value[i], entry.Key.Item2, 1);
+			//}
 		}
 		
 	}
