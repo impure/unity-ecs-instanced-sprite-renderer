@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Unity.Entities;
 using Unity.Mathematics;
-using Unity.Transforms;
-using Unity.Transforms2D;
 using UnityEditor;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
@@ -53,13 +50,14 @@ public class Init : MonoBehaviour {
 
 		for (int i = 0; i < numSprites; i++) {
 			if (i % 3 == 0) {
-				positions1.Add(Matrix4x4.Translate(new Vector3(Random.value * 50, Random.value * 50, 0)));
+				positions1.Add(Matrix4x4.TRS(new Vector3((Random.value - 0.5f) * 50, (Random.value - 0.5f) * 50, i), Quaternion.AngleAxis(-90, new Vector3(1, 0, 0)), Vector3.one));
 			} else if (i % 3 == 1) {
-				positions2.Add(Matrix4x4.Translate(new Vector3(Random.value * 50, Random.value * 50, 0)));
+				positions2.Add(Matrix4x4.TRS(new Vector3((Random.value - 0.5f) * 50, (Random.value - 0.5f) * 50, i), Quaternion.AngleAxis(-90, new Vector3(1, 0, 0)), Vector3.one));
 			} else {
-				positions3.Add(Matrix4x4.Translate(new Vector3(Random.value * 50, Random.value * 50, 0)));
+				positions3.Add(Matrix4x4.TRS(new Vector3((Random.value - 0.5f) * 50, (Random.value - 0.5f) * 50, i), Quaternion.AngleAxis(-90, new Vector3(1, 0, 0)), Vector3.one));
 			}
 		}
+		
 		addDictionaryEntry(animalSprites[0], positions1);
 		addDictionaryEntry(animalSprites[1], positions2);
 		addDictionaryEntry(animalSprites[2], positions3);

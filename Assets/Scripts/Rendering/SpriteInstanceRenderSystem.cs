@@ -11,29 +11,13 @@ using UnityEngine;
 /// </summary>
 public class SpriteInstanceRendererSystem : ComponentSystem {
 	
-	private readonly Dictionary<SpriteInstanceRenderer, Material> materialCache = new Dictionary<SpriteInstanceRenderer, Material>();
-	private readonly Dictionary<SpriteInstanceRenderer, Mesh> meshCache = new Dictionary<SpriteInstanceRenderer, Mesh>();
-
-	// Instance renderer takes only batches of 1023
-	private readonly Matrix4x4[] matricesArray = new Matrix4x4[1023];
-	private readonly List<SpriteInstanceRenderer> cacheduniqueRendererTypes = new List<SpriteInstanceRenderer>();
 	private ComponentGroup instanceRendererGroup;
-	
-	public static List<SpriteInstanceRenderer> toRender = new List<SpriteInstanceRenderer>();
-
-	/// <summary>
-	/// Gets a container for all of our meshes and transforms
-	/// </summary>
-	protected override void OnCreateManager(int capacity) {
-		//instanceRendererGroup = GetComponentGroup(typeof(SpriteInstanceRenderer), typeof(TransformMatrix));
-	}
-
+	private const int gpuInstancingMagicNumber = 1023;
 
 	/// <summary>
 	/// Renders everything.
 	/// </summary>
 	protected override void OnUpdate() {
-		
 		drawOriginal();
 	}
 
@@ -41,6 +25,11 @@ public class SpriteInstanceRendererSystem : ComponentSystem {
 	private void drawOriginal() {
 
 		foreach (var entry in Init.toDraw) {
+
+			if (entry.Value.Count > gpuInstancingMagicNumber) {
+				throw new Exception("Too many sprites! There are " + entry.Value.Count + " sprites!");
+			}
+			
 			Graphics.DrawMeshInstanced(entry.Key.Item1, 0, entry.Key.Item2, entry.Value);
 		}
 		
@@ -115,6 +104,7 @@ public class SpriteInstanceRendererSystem : ComponentSystem {
 	*/
 
 
+	/*
 	/// <summary>
 	/// This copies a 4x4 matrix really fast. How does it work? No one knows.
 	/// </summary>
@@ -140,4 +130,5 @@ public class SpriteInstanceRendererSystem : ComponentSystem {
 			transforms.CopyTo(matricesSlice, beginIndex);
 		}
 	}
+	*/
 }
