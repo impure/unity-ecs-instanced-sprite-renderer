@@ -1,4 +1,4 @@
-# ECS-Like System
+# Simple ECS Implementation
 
 This is a simplified version of paullj's [Unity ECS implementation](https://github.com/paullj/unity-ecs-instanced-sprite-renderer). It was designed as a proof of concept for use in my current project.
 
