@@ -25,7 +25,7 @@ public class SpriteInstanceRendererSystem : ComponentSystem {
 	/// Gets a container for all of our meshes and transforms
 	/// </summary>
 	protected override void OnCreateManager(int capacity) {
-		instanceRendererGroup = GetComponentGroup(typeof(SpriteInstanceRenderer), typeof(TransformMatrix));
+		//instanceRendererGroup = GetComponentGroup(typeof(SpriteInstanceRenderer), typeof(TransformMatrix));
 	}
 
 
@@ -39,6 +39,12 @@ public class SpriteInstanceRendererSystem : ComponentSystem {
 
 
 	private void drawOriginal() {
+
+		foreach (var entry in Init.toDraw) {
+			Graphics.DrawMeshInstanced(entry.Key.Item1, 0, entry.Key.Item2, entry.Value);
+		}
+		
+		/*
 		
 		EntityManager.GetAllUniqueSharedComponentDatas(cacheduniqueRendererTypes);
 		int numNull = 0;
@@ -91,21 +97,22 @@ public class SpriteInstanceRendererSystem : ComponentSystem {
 			// We can only batch 1023 things at once. So keep on batching 1023 things and then batch the remainder.
 			Graphics.DrawMeshInstanced(mesh, 0, material, matricesArray);
 			//Graphics.DrawMesh(mesh, Vector3.zero, Quaternion.identity, material, 0);
-			/*
-			int beginIndex = 0;
-			while (beginIndex < transforms.Length) {
-				int length = math.min(matricesArray.Length, transforms.Length - beginIndex);
-				copyMatrices(transforms, beginIndex, length, matricesArray);
-				Graphics.DrawMeshInstanced(mesh, 0, material, matricesArray);
-
-				beginIndex += length;
-			}
-			*/
 		}
 
 		cacheduniqueRendererTypes.Clear();
-		
+		*/
 	}
+	
+	/*
+	int beginIndex = 0;
+	while (beginIndex < transforms.Length) {
+		int length = math.min(matricesArray.Length, transforms.Length - beginIndex);
+		copyMatrices(transforms, beginIndex, length, matricesArray);
+		Graphics.DrawMeshInstanced(mesh, 0, material, matricesArray);
+
+		beginIndex += length;
+	}
+	*/
 
 
 	/// <summary>
