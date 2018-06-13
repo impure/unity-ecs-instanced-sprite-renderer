@@ -16,7 +16,8 @@ public class Init : MonoBehaviour {
 	
 	private void Start() {
 		QualitySettings.vSyncCount = 0;
-		generate();
+		generateECS();
+		//generateNormal();
 	}
 
 
@@ -35,7 +36,7 @@ public class Init : MonoBehaviour {
 	/// <summary>
 	/// Generates all the data the ECS system will use
 	/// </summary>
-	private void generate() {
+	private void generateECS() {
         
 		Stopwatch stopwatch = new Stopwatch();
 		stopwatch.Start();
@@ -47,6 +48,7 @@ public class Init : MonoBehaviour {
 			AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Sprites/zebra.png")
 		};
 		
+		// Starting the lists at size 1023 should help in theory but in practise doesn't really help.
 		List<Matrix4x4> positions1 = new List<Matrix4x4>(1023);
 		List<Matrix4x4> positions2 = new List<Matrix4x4>(1023);
 		List<Matrix4x4> positions3 = new List<Matrix4x4>(1023);
@@ -67,6 +69,31 @@ public class Init : MonoBehaviour {
 		addDictionaryEntry(animalSprites[0], positions1);
 		addDictionaryEntry(animalSprites[1], positions2);
 		addDictionaryEntry(animalSprites[2], positions3);
+		stopwatch.Stop();
+		Debug.Log("Instantiating objects took " + stopwatch.ElapsedMilliseconds + "ms.");
+	}
+
+
+	/// <summary>
+	/// Generates all the data the ECS system will use
+	/// </summary>
+	private void generateNormal() {
+        
+		Stopwatch stopwatch = new Stopwatch();
+		stopwatch.Start();
+
+		for (int i = 0; i < numSprites; i++) {
+			if (i % 3 == 0) {
+				Instantiate(Resources.Load("Sprite1"), 
+					new Vector3((Random.value - 0.5f) * 50, (Random.value - 0.5f) * 50, i * 0.1f), Quaternion.identity);
+			} else if (i % 3 == 1) {
+				Instantiate(Resources.Load("Sprite2"), 
+					new Vector3((Random.value - 0.5f) * 50, (Random.value - 0.5f) * 50, i * 0.1f), Quaternion.identity);
+			} else {
+				Instantiate(Resources.Load("Sprite3"), 
+					new Vector3((Random.value - 0.5f) * 50, (Random.value - 0.5f) * 50, i * 0.1f), Quaternion.identity);
+			}
+		}
 		stopwatch.Stop();
 		Debug.Log("Instantiating objects took " + stopwatch.ElapsedMilliseconds + "ms.");
 	}
