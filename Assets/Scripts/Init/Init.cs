@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Unity.Mathematics;
 using UnityEditor;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
@@ -12,7 +11,6 @@ using Random = UnityEngine.Random;
 /// </summary>
 public class Init : MonoBehaviour {
 
-	private int counter = 0;
 	public static readonly Dictionary<Tuple<Mesh, Material>, List<Matrix4x4>> toDraw = new Dictionary<Tuple<Mesh, Material>, List<Matrix4x4>>();
 	private const int numSprites = 3000;
 	
@@ -21,9 +19,10 @@ public class Init : MonoBehaviour {
 		generate();
 	}
 
+
 	private void addDictionaryEntry(Texture2D texture, List<Matrix4x4> positions) {
 
-		Mesh mesh = MeshUtils.GenerateQuad(texture.width, new float2(0.5f, 0.5f));
+		Mesh mesh = MeshUtils.GenerateQuad(texture.width, new Vector2(0.5f, 0.5f));
 		Material material = new Material(Shader.Find("Sprites/Instanced")) {
 			enableInstancing = true,
 			mainTexture = texture
@@ -32,6 +31,10 @@ public class Init : MonoBehaviour {
 		toDraw[new Tuple<Mesh, Material>(mesh, material)] = positions;
 	}
 
+
+	/// <summary>
+	/// Generates all the data the ECS system will use
+	/// </summary>
 	private void generate() {
         
 		Stopwatch stopwatch = new Stopwatch();
@@ -50,11 +53,14 @@ public class Init : MonoBehaviour {
 
 		for (int i = 0; i < numSprites; i++) {
 			if (i % 3 == 0) {
-				positions1.Add(Matrix4x4.TRS(new Vector3((Random.value - 0.5f) * 50, (Random.value - 0.5f) * 50, i), Quaternion.AngleAxis(-90, new Vector3(1, 0, 0)), Vector3.one));
+				positions1.Add(Matrix4x4.TRS(new Vector3((Random.value - 0.5f) * 50, (Random.value - 0.5f) * 50, i * 0.1f),
+					Quaternion.AngleAxis(-90, new Vector3(1, 0, 0)), Vector3.one * (1f / animalSprites[2].width)));
 			} else if (i % 3 == 1) {
-				positions2.Add(Matrix4x4.TRS(new Vector3((Random.value - 0.5f) * 50, (Random.value - 0.5f) * 50, i), Quaternion.AngleAxis(-90, new Vector3(1, 0, 0)), Vector3.one));
+				positions2.Add(Matrix4x4.TRS(new Vector3((Random.value - 0.5f) * 50, (Random.value - 0.5f) * 50, i * 0.1f),
+					Quaternion.AngleAxis(-90, new Vector3(1, 0, 0)), Vector3.one * (1f / animalSprites[2].width)));
 			} else {
-				positions3.Add(Matrix4x4.TRS(new Vector3((Random.value - 0.5f) * 50, (Random.value - 0.5f) * 50, i), Quaternion.AngleAxis(-90, new Vector3(1, 0, 0)), Vector3.one));
+				positions3.Add(Matrix4x4.TRS(new Vector3((Random.value - 0.5f) * 50, (Random.value - 0.5f) * 50, i * 0.1f),
+					Quaternion.AngleAxis(-90, new Vector3(1, 0, 0)), Vector3.one * (1f / animalSprites[2].width)));
 			}
 		}
 		
@@ -63,37 +69,5 @@ public class Init : MonoBehaviour {
 		addDictionaryEntry(animalSprites[2], positions3);
 		stopwatch.Stop();
 		Debug.Log("Instantiating objects took " + stopwatch.ElapsedMilliseconds + "ms.");
-		
-		/*
-		stopwatch.Reset();
-		stopwatch.Start();
-        
-		
-		//Assign loaded sprites to sprite renderers
-		SpriteInstanceRenderer[] renderers = {
-			new SpriteInstanceRenderer(animalSprites[0], animalSprites[0].width, new float2(0.5f, 0.5f)),
-			new SpriteInstanceRenderer(animalSprites[1], animalSprites[1].width, new float2(0.5f, 0.5f)),
-			new SpriteInstanceRenderer(animalSprites[2], animalSprites[2].width, new float2(0.5f, 0.5f))
-		};
-		
-		EntityManager entityManager = World.Active.GetOrCreateManager<EntityManager>();
-		for (int i = 0; i < 3000; i++) {
-			
-			//SpriteInstanceRendererSystem.toRender.Add(renderers[i % 3]);
-			
-			Entity entity = entityManager.CreateEntity(ComponentType.Create<Position2D>(),
-				ComponentType.Create<TransformMatrix>());
-
-			entityManager.SetComponentData(entity, new Position2D {
-				Value = new float2(Random.value * 50, Random.value * 25)
-			});
-
-			entityManager.AddSharedComponentData(entity, renderers[i % 3]);
-			
-		}
-		
-		stopwatch.Stop();
-		Debug.Log("Instantiating objects took " + stopwatch.ElapsedMilliseconds + "ms.");
-		*/
 	}
 }
