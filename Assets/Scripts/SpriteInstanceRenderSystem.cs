@@ -7,9 +7,6 @@ using Unity.Transforms;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-/// <summary>
-/// Renders all Entities containingå both SpriteInstanceRenderer & TransformMatrix components.
-/// </summary>
 public class SpriteInstanceRendererSystem : ComponentSystem {
 	
 	private const int gpuInstancingMagicNumber = 1023;

@@ -37,6 +37,9 @@ public class Init : MonoBehaviour {
 	
 	private void Start() {
 		
+		rng = new Random();
+		QualitySettings.vSyncCount = 0;
+		
 		Stopwatch stopwatch = new Stopwatch();
 		stopwatch.Start();
 		
@@ -52,9 +55,6 @@ public class Init : MonoBehaviour {
 			animalSprites[2].width
 		};
 		
-		rng = new Random();
-		
-		QualitySettings.vSyncCount = 0;
 		
 		stopwatch.Stop();
 		Debug.Log("Time to load stuff: " + stopwatch.ElapsedMilliseconds + "ms");
