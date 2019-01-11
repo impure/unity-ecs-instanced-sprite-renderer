@@ -198,7 +198,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1763039988}
-  - component: {fileID: 1763039992}
   - component: {fileID: 1763039993}
   - component: {fileID: 1763039990}
   m_Layer: 0
@@ -232,18 +231,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b7be3e68c9044c95af2adc34dab7877, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  texture1: {fileID: 2800000, guid: 9659d6d6df29b9c44aedd1a7b3c4aa4a, type: 3}
+  texture2: {fileID: 2800000, guid: 9df0ef508539a7c44a7192049f4baa9f, type: 3}
+  texture3: {fileID: 2800000, guid: 2cc4021360ef74446b886b4afd57a2c5, type: 3}
   useComponent: 1
---- !u!114 &1763039992
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1763039987}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 56d5d6335803a394e8efb1ad5896179f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1763039993
 MonoBehaviour:
   m_ObjectHideFlags: 0

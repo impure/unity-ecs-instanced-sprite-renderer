@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.Rendering;
 using Debug = UnityEngine.Debug;
 using Random = System.Random;
 
@@ -18,6 +16,8 @@ public class MainLoop : MonoBehaviour {
 	private Random rng;
 	private Tuple<Mesh, Material>[] keys;
 	private const int gpuInstancingMagicNumber = 1023;
+
+	[SerializeField] private Texture2D texture1, texture2, texture3;
 
 	[SerializeField] public bool useComponent = true;
 
@@ -35,10 +35,10 @@ public class MainLoop : MonoBehaviour {
 
 		//Load all the sprites we need
 		animalSprites = new [] {
-			AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Sprites/elephant.png"),
-			AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Sprites/giraffe.png"),
-			AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Sprites/zebra.png")
-		};
+									texture1,
+									texture2,
+									texture3
+								};
 		animalSpriteWidths = new [] {
 			animalSprites[0].width,
 			animalSprites[1].width,
