@@ -11,38 +11,28 @@ using Random = System.Random;
 /// <summary>
 /// Illustrates that we can interact with ECS from the traditional monobehaviour model
 /// </summary>
-public class Init : MonoBehaviour {
+public class MainLoop : MonoBehaviour {
 
 	public static readonly Dictionary<Tuple<Mesh, Material>, List<Matrix4x4>> toDraw = new Dictionary<Tuple<Mesh, Material>, List<Matrix4x4>>();
 	private const int numSprites = 3000;
-	public static volatile bool listDone = false;
 	private Random rng;
 	private Tuple<Mesh, Material>[] keys;
 	private const int gpuInstancingMagicNumber = 1023;
 
 	[SerializeField] public bool useComponent = true;
 
-	private static Init instance;
-	public static bool _useComponent {
-		get { return instance.useComponent; }
-	}
-
 	//Load all the sprites we need
 	private Texture2D[] animalSprites;
 	private int[] animalSpriteWidths;
 
-	private void Awake() {
-		instance = this;
-	}
-	
 	private void Start() {
-		
+
 		rng = new Random();
 		QualitySettings.vSyncCount = 0;
-		
+
 		Stopwatch stopwatch = new Stopwatch();
 		stopwatch.Start();
-		
+
 		//Load all the sprites we need
 		animalSprites = new [] {
 			AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Sprites/elephant.png"),
@@ -54,11 +44,11 @@ public class Init : MonoBehaviour {
 			animalSprites[1].width,
 			animalSprites[2].width
 		};
-		
-		
+
+
 		stopwatch.Stop();
 		Debug.Log("Time to load stuff: " + stopwatch.ElapsedMilliseconds + "ms");
-		
+
 		generateECSThreadedMain();
 		//generateECS();
 		//generateNormal();
@@ -77,14 +67,10 @@ public class Init : MonoBehaviour {
 	/// </summary>
 	protected void Update() {
 
-		if (!listDone) {
+		if (!useComponent) {
 			return;
 		}
 
-		if (useComponent) {
-			return;
-		}
-		
 		foreach (var entry in toDraw) {
 
 			if (entry.Value.Count > gpuInstancingMagicNumber) {
@@ -93,9 +79,8 @@ public class Init : MonoBehaviour {
 			
 			// Standard way of drawing meshes
 			//Graphics.DrawMeshInstanced(entry.Key.Item1, 0, entry.Key.Item2, entry.Value);
-			
-			// Allows for layers.
-			Graphics.DrawMeshInstanced(entry.Key.Item1, 0, entry.Key.Item2, entry.Value, new MaterialPropertyBlock(), new ShadowCastingMode(), false, 1);
+
+			Graphics.DrawMeshInstanced(entry.Key.Item1, 0, entry.Key.Item2, entry.Value);
 
 			//for (int i = 0; i < entry.Value.Count; i++) {
 			//	Graphics.DrawMesh(entry.Key.Item1, entry.Value[i], entry.Key.Item2, 1);
@@ -163,7 +148,6 @@ public class Init : MonoBehaviour {
 		
 		stopwatch.Stop();
 		Debug.Log("Create: " + stopwatch.ElapsedMilliseconds + "ms.");
-		listDone = true;
 	}
 	
 	
@@ -199,7 +183,6 @@ public class Init : MonoBehaviour {
 		
 		stopwatch.Stop();
 		Debug.Log("Creating meshes took " + stopwatch.ElapsedMilliseconds + "ms.");
-		listDone = true;
 	}
 
 
