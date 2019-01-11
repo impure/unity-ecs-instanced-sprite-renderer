@@ -17,6 +17,8 @@ public class MainLoop : MonoBehaviour {
 	private Tuple<Mesh, Material>[] keys;
 	private const int gpuInstancingMagicNumber = 1023;
 
+	[SerializeField] private Material instancedMaterial;
+
 	[SerializeField] private Texture2D texture1, texture2, texture3;
 
 	[SerializeField] public bool useComponent = true;
@@ -189,10 +191,15 @@ public class MainLoop : MonoBehaviour {
 	private void addDictionaryEntry(Texture2D texture, int width, List<Matrix4x4> positions) {
 
 		Mesh mesh = MeshUtils.GenerateQuad(width, new Vector2(0.5f, 0.5f));
+		Material material = instancedMaterial;
+		material.mainTexture = texture;
+
+		/*
 		Material material = new Material(Shader.Find("Sprites/Instanced")) {
 			enableInstancing = true,
 			mainTexture = texture
 		};
+		*/
 		
 		toDraw[new Tuple<Mesh, Material>(mesh, material)] = positions;
 	}
