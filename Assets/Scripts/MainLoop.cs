@@ -18,6 +18,7 @@ public class MainLoop : MonoBehaviour {
 	private const int gpuInstancingMagicNumber = 1023;
 
 	[SerializeField] private Material instancedMaterial;
+	[SerializeField] private Shader instancingShader;
 
 	[SerializeField] private Texture2D texture1, texture2, texture3;
 
@@ -152,7 +153,7 @@ public class MainLoop : MonoBehaviour {
 		Debug.Log("Create: " + stopwatch.ElapsedMilliseconds + "ms.");
 	}
 	
-	
+	/*
 	/// <summary>
 	/// Generates all the data the ECS system will use
 	/// </summary>
@@ -191,22 +192,21 @@ public class MainLoop : MonoBehaviour {
 	private void addDictionaryEntry(Texture2D texture, int width, List<Matrix4x4> positions) {
 
 		Mesh mesh = MeshUtils.GenerateQuad(width, new Vector2(0.5f, 0.5f));
-		Material material = instancedMaterial;
-		material.mainTexture = texture;
+		//Material material = instancedMaterial;
+		//material.mainTexture = texture;
 
-		/*
-		Material material = new Material(Shader.Find("Sprites/Instanced")) {
+		Material material = new Material(instancingShader) {
 			enableInstancing = true,
 			mainTexture = texture
 		};
-		*/
-		
+
 		toDraw[new Tuple<Mesh, Material>(mesh, material)] = positions;
 	}
+	*/
 
-	
+
 	private Tuple<Mesh, Material> makeKey(Texture2D texture, int width) {
-		
+
 		Mesh mesh = MeshUtils.GenerateQuad(width, new Vector2(0.5f, 0.5f));
 		Material material = new Material(Shader.Find("Sprites/Instanced")) {
 			enableInstancing = true,

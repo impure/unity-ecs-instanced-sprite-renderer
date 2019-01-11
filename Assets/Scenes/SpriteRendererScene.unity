@@ -232,6 +232,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   instancedMaterial: {fileID: 2100000, guid: 1bee97909bbf66f46b6c980733cc4e2b, type: 2}
+  instancingShader: {fileID: 0}
   texture1: {fileID: 2800000, guid: 9659d6d6df29b9c44aedd1a7b3c4aa4a, type: 3}
   texture2: {fileID: 2800000, guid: 9df0ef508539a7c44a7192049f4baa9f, type: 3}
   texture3: {fileID: 2800000, guid: 2cc4021360ef74446b886b4afd57a2c5, type: 3}
